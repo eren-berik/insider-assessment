@@ -1,0 +1,13 @@
+# Ignore Go binary
+main
+
+# Ignore Swagger docs if you don’t want to regenerate them
+/docs
+
+# Ignore Go build cache
+*.out
+*.log
+*.tmp
+
+# Ignore vendor folder if you're not using it
+/vendor
