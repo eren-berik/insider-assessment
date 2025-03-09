@@ -68,3 +68,8 @@ INSERT INTO messages (phone_number, content, status) VALUES
 ```
 
 ## Screenshots
+Here is a screenshot of the app:
+
+![](./assets/screenshot-1.png)
+![](./assets/screenshot-2.png)
+![](./assets/screenshot-3.png)
