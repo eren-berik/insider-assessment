@@ -1,4 +1,4 @@
-package redis
+package message
 
 import (
 	"bytes"
@@ -8,8 +8,8 @@ import (
 )
 
 type (
-	Serializer       struct{}
-	MessageSerialize struct {
+	Serializer        struct{}
+	SerializedMessage struct {
 		Id           string    `json:"id"`
 		ResponseCode int       `json:"response_code"`
 		SentTime     time.Time `json:"sent_time"`
@@ -31,7 +31,7 @@ func (s Serializer) Serialize(m message.Cache) ([]byte, error) {
 }
 
 func (s Serializer) Deserialize(data []byte) (message.Cache, error) {
-	var m MessageSerialize
+	var m SerializedMessage
 	buf := bytes.NewBuffer(data)
 	dec := gob.NewDecoder(buf)
 	if err := dec.Decode(&m); err != nil {
@@ -40,15 +40,15 @@ func (s Serializer) Deserialize(data []byte) (message.Cache, error) {
 	return Message(m), nil
 }
 
-func NewSerializedMessage(m message.Cache) MessageSerialize {
-	return MessageSerialize{
+func NewSerializedMessage(m message.Cache) SerializedMessage {
+	return SerializedMessage{
 		m.ID(),
 		m.ResponseCode(),
 		m.SentTime().UTC().Truncate(time.Microsecond),
 	}
 }
 
-func Message(m MessageSerialize) message.Cache {
+func Message(m SerializedMessage) message.Cache {
 	return message.NewMessageCache(
 		m.Id,
 		m.ResponseCode,

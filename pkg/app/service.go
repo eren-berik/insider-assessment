@@ -5,7 +5,7 @@ import (
 	"insider-assesment/pkg/infrastructure/postgres"
 	message2 "insider-assesment/pkg/infrastructure/postgres/message"
 	"insider-assesment/pkg/infrastructure/redis"
-	_cacheSerializer "insider-assesment/pkg/infrastructure/redis"
+	_cacheSerializer "insider-assesment/pkg/infrastructure/redis/message"
 	"time"
 )
 
@@ -26,6 +26,6 @@ func RegisterService(opt *Options) *ServiceProvider {
 	postgresClient := postgres.NewPGPool(opt.PostgresConnectionUrl)
 	redisClient := redis.NewRedisClient(opt.RedisConnectionUrl)
 	_ = message2.NewService(postgresClient)
-	_ = redis.NewService(redisClient, _cacheSerializer.NewSerializer())
+	_ = _cacheSerializer.NewService(redisClient, _cacheSerializer.NewSerializer())
 	return &ServiceProvider{}
 }

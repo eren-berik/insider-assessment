@@ -1,9 +1,10 @@
-package redis
+package message
 
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
 	"insider-assesment/pkg/domain/message"
+	redis2 "insider-assesment/pkg/infrastructure/redis"
 	"reflect"
 	"testing"
 	"time"
@@ -19,7 +20,7 @@ func testNewCache() message.Cache {
 }
 
 func testRedis() *redis.Client {
-	return NewRedisClient("localhost:6379")
+	return redis2.NewRedisClient("localhost:6379")
 }
 
 func testArgs() struct {
