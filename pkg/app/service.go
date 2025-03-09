@@ -14,18 +14,35 @@ type (
 		PostgresConnectionUrl string
 		RedisConnectionUrl    string
 		TriggerTime           time.Duration
-		BatchSize             int
+		BatchSize             int32
 	}
 	ServiceProvider struct {
-		postgresService message.PostgresService
-		redisService    message.CacheService
+		PostgresService      message.PostgresService
+		CacheService         message.CacheService
+		MessageSenderService MessageSender
+	}
+	OptionProvider struct {
+		TriggerTime time.Duration
+		BatchSize   int32
 	}
 )
 
 func RegisterService(opt *Options) *ServiceProvider {
 	postgresClient := postgres.NewPGPool(opt.PostgresConnectionUrl)
 	redisClient := redis.NewRedisClient(opt.RedisConnectionUrl)
-	_ = message2.NewService(postgresClient)
-	_ = _cacheSerializer.NewService(redisClient, _cacheSerializer.NewSerializer())
-	return &ServiceProvider{}
+	postgresService := message2.NewService(postgresClient)
+	cacheService := _cacheSerializer.NewService(redisClient, _cacheSerializer.NewSerializer())
+	messageSenderService := NewMessageSender()
+	return &ServiceProvider{
+		PostgresService:      postgresService,
+		CacheService:         cacheService,
+		MessageSenderService: *messageSenderService,
+	}
+}
+
+func RegisterOptions(opt *Options) *OptionProvider {
+	return &OptionProvider{
+		TriggerTime: opt.TriggerTime,
+		BatchSize:   opt.BatchSize,
+	}
 }

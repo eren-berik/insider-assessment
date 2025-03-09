@@ -39,7 +39,7 @@ func TestService_GetMessagesByStatus(t *testing.T) {
 
 	seedTestMessages(conn, t)
 
-	sentMessages, err := service.GetMessagesByStatus(context.Background(), message.Sent)
+	sentMessages, err := service.GetMessagesByStatus(context.Background(), message.Sent, 2)
 	assert.NoError(t, err)
 	assert.NotNil(t, sentMessages)
 	assert.Len(t, sentMessages, 1)
@@ -49,7 +49,7 @@ func TestService_GetMessagesByStatus(t *testing.T) {
 	assert.Equal(t, "Test content 1", sentMessages[0].Content())
 	assert.Equal(t, "Sent", sentMessages[0].Status().String())
 
-	pendingMessages, err := service.GetMessagesByStatus(context.Background(), message.Pending)
+	pendingMessages, err := service.GetMessagesByStatus(context.Background(), message.Pending, 2)
 	assert.NoError(t, err)
 	assert.NotNil(t, pendingMessages)
 	assert.Len(t, pendingMessages, 1)

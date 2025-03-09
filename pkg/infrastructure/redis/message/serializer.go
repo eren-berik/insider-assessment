@@ -10,9 +10,8 @@ import (
 type (
 	Serializer        struct{}
 	SerializedMessage struct {
-		Id           uint64    `json:"id"`
-		ResponseCode int       `json:"response_code"`
-		SentTime     time.Time `json:"sent_time"`
+		Id       string    `json:"id"`
+		SentTime time.Time `json:"sent_time"`
 	}
 )
 
@@ -43,7 +42,6 @@ func (s Serializer) Deserialize(data []byte) (message.Cache, error) {
 func NewSerializedMessage(m message.Cache) SerializedMessage {
 	return SerializedMessage{
 		m.ID(),
-		m.ResponseCode(),
 		m.SentTime().UTC().Truncate(time.Microsecond),
 	}
 }
@@ -51,7 +49,6 @@ func NewSerializedMessage(m message.Cache) SerializedMessage {
 func Message(m SerializedMessage) message.Cache {
 	return message.NewMessageCache(
 		m.Id,
-		m.ResponseCode,
 		m.SentTime.UTC().Truncate(time.Microsecond),
 	)
 }

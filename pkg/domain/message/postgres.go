@@ -14,7 +14,7 @@ const (
 type (
 	PostgresService interface {
 		AllMessages(ctx context.Context) ([]*Message, error)
-		GetMessagesByStatus(ctx context.Context, status Status) ([]*Message, error)
+		GetMessagesByStatus(ctx context.Context, status Status, batchSize int32) ([]*Message, error)
 		UpdateMessageStatus(ctx context.Context, id uint64, status Status) error
 	}
 	Message struct {

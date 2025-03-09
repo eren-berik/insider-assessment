@@ -39,14 +39,26 @@ func (s Service) AllMessages(ctx context.Context) ([]*message.Message, error) {
 	return newMessageList(messages), nil
 }
 
-func (s Service) GetMessagesByStatus(ctx context.Context, status message.Status) ([]*message.Message, error) {
+func (s Service) GetMessagesByStatus(ctx context.Context, status message.Status, batchSize int32) ([]*message.Message, error) {
 	var messages []*Message
 
-	query := `SELECT id, phone_number, content, status FROM "messages" WHERE status = $1`
-	rows, err := s.client.Query(ctx, query, status)
-	if err != nil {
-		return newMessageList(messages), err
+	var query string
+	var args []interface{}
+
+	if batchSize == -1 {
+		query = `SELECT id, phone_number, content, status FROM "messages" WHERE status = $1`
+		args = append(args, status)
+	} else {
+		query = `SELECT id, phone_number, content, status FROM "messages" WHERE status = $1 LIMIT $2`
+		args = append(args, status, batchSize)
 	}
+
+	rows, err := s.client.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
 	for rows.Next() {
 		m := &Message{}
 		err = rows.Scan(
@@ -59,6 +71,10 @@ func (s Service) GetMessagesByStatus(ctx context.Context, status message.Status)
 			return nil, err
 		}
 		messages = append(messages, m)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return newMessageList(messages), nil
