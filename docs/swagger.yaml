@@ -1,0 +1,84 @@
+basePath: /
+definitions:
+  api.MessageListResponse:
+    description: List of messages response structure
+    properties:
+      messages:
+        description: Array of messages
+        items:
+          $ref: '#/definitions/api.MessageResponse'
+        type: array
+    type: object
+  api.MessageResponse:
+    description: Single message response structure
+    properties:
+      content:
+        description: The content of the message
+        example: Hello, this is a test message
+        type: string
+      id:
+        description: The unique identifier of the message, big serial in database
+        example: 1
+        type: integer
+      recipient_phone_number:
+        description: The recipient's phone number
+        example: "+1234567890"
+        type: string
+      status:
+        description: The current status of the message (pending, sent, failed)
+        example: sent
+        type: string
+    type: object
+host: localhost:4300
+info:
+  contact: {}
+  description: This service automatically sends messages and provides control over
+    the sending process
+  title: Message Sending System API
+  version: "1.0"
+paths:
+  /messages:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all sent messages from the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.MessageListResponse'
+        "404":
+          description: No messages found
+          schema:
+            type: string
+        "500":
+          description: Failed to fetch messages
+          schema:
+            type: string
+      summary: List sent messages
+      tags:
+      - messages
+  /worker:
+    post:
+      consumes:
+      - application/json
+      description: Start or stop the automatic message sending worker
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Worker started/stopped successfully
+          schema:
+            type: string
+        "405":
+          description: Method not allowed
+          schema:
+            type: string
+      summary: Control message sending worker
+      tags:
+      - worker
+schemes:
+- http
+swagger: "2.0"

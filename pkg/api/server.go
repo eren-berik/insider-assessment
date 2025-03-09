@@ -1,12 +1,22 @@
+// Package api provides REST API functionality for the message sending system
+// @title Message Sending System API
+// @version 1.0
+// @description This service automatically sends messages and provides control over the sending process
+// @host localhost:4300
+// @BasePath /
+// @schemes http
 package api
 
 import (
 	"encoding/json"
+	_ "insider-assesment/docs"
 	"insider-assesment/pkg/app"
 	"insider-assesment/pkg/domain/message"
 	"log"
 	"net/http"
 	"sync"
+
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 const address = ":4300"
@@ -35,6 +45,7 @@ func NewServer(
 }
 
 func (s *Server) Run() {
+	s.mux.Handle("/swagger/", httpSwagger.WrapHandler)
 	s.mux.HandleFunc("/worker", s.handleWorkerControl)
 	s.mux.HandleFunc("/messages", s.handleMessages)
 
@@ -48,6 +59,14 @@ func (s *Server) Run() {
 	}
 }
 
+// @Summary Control message sending worker
+// @Description Start or stop the automatic message sending worker
+// @Tags worker
+// @Accept json
+// @Produce json
+// @Success 200 {object} string "Worker started/stopped successfully"
+// @Failure 405 {object} string "Method not allowed"
+// @Router /worker [post]
 func (s *Server) handleWorkerControl(w http.ResponseWriter, r *http.Request) {
 	s.workerMu.Lock()
 	defer s.workerMu.Unlock()
@@ -70,6 +89,15 @@ func (s *Server) handleWorkerControl(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary List sent messages
+// @Description Retrieve a list of all sent messages from the system
+// @Tags messages
+// @Accept json
+// @Produce json
+// @Success 200 {object} api.MessageListResponse
+// @Failure 404 {object} string "No messages found"
+// @Failure 500 {object} string "Failed to fetch messages"
+// @Router /messages [get]
 func (s *Server) handleMessages(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
