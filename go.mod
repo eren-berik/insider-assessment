@@ -1,4 +1,4 @@
-module insider-assesment
+module insider-assessment
 
 go 1.23.6
 

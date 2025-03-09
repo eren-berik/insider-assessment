@@ -1,8 +1,8 @@
 package main
 
 import (
-	"insider-assesment/pkg/api"
-	"insider-assesment/pkg/app"
+	"insider-assessment/pkg/api"
+	"insider-assessment/pkg/app"
 )
 
 func main() {

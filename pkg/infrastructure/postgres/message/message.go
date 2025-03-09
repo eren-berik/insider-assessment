@@ -1,6 +1,6 @@
 package message
 
-import "insider-assesment/pkg/domain/message"
+import "insider-assessment/pkg/domain/message"
 
 type Message struct {
 	ID                   uint64

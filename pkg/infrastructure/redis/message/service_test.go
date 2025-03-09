@@ -3,8 +3,8 @@ package message
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
-	"insider-assesment/pkg/domain/message"
-	redis2 "insider-assesment/pkg/infrastructure/redis"
+	"insider-assessment/pkg/domain/message"
+	redis2 "insider-assessment/pkg/infrastructure/redis"
 	"reflect"
 	"testing"
 	"time"

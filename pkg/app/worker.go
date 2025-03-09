@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	"insider-assesment/pkg/domain/message"
+	"insider-assessment/pkg/domain/message"
 	"log"
 	"sync"
 	"time"

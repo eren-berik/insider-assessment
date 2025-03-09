@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/stretchr/testify/assert"
-	"insider-assesment/pkg/domain/message"
-	"insider-assesment/pkg/infrastructure/postgres"
+	"insider-assessment/pkg/domain/message"
+	"insider-assessment/pkg/infrastructure/postgres"
 	"testing"
 )
 

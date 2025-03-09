@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/go-redis/redis/v8"
-	"insider-assesment/pkg/domain/message"
+	"insider-assessment/pkg/domain/message"
 )
 
 const cacheKeyPrefixModel = "message:"

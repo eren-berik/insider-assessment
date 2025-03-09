@@ -9,9 +9,9 @@ package api
 
 import (
 	"encoding/json"
-	_ "insider-assesment/docs"
-	"insider-assesment/pkg/app"
-	"insider-assesment/pkg/domain/message"
+	_ "insider-assessment/docs"
+	"insider-assessment/pkg/app"
+	"insider-assessment/pkg/domain/message"
 	"log"
 	"net/http"
 	"sync"

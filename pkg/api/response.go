@@ -1,6 +1,6 @@
 package api
 
-import "insider-assesment/pkg/domain/message"
+import "insider-assessment/pkg/domain/message"
 
 // MessageResponse represents a single message in the system
 // @Description Single message response structure

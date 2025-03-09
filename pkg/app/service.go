@@ -1,11 +1,11 @@
 package app
 
 import (
-	"insider-assesment/pkg/domain/message"
-	"insider-assesment/pkg/infrastructure/postgres"
-	message2 "insider-assesment/pkg/infrastructure/postgres/message"
-	"insider-assesment/pkg/infrastructure/redis"
-	_cacheSerializer "insider-assesment/pkg/infrastructure/redis/message"
+	"insider-assessment/pkg/domain/message"
+	"insider-assessment/pkg/infrastructure/postgres"
+	message2 "insider-assessment/pkg/infrastructure/postgres/message"
+	"insider-assessment/pkg/infrastructure/redis"
+	_cacheSerializer "insider-assessment/pkg/infrastructure/redis/message"
 	"time"
 )
 

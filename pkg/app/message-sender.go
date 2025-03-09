@@ -3,7 +3,7 @@ package app
 import (
 	"bytes"
 	"encoding/json"
-	"insider-assesment/pkg/domain/message"
+	"insider-assessment/pkg/domain/message"
 	"io"
 	"log"
 	"net/http"

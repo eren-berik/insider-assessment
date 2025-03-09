@@ -3,7 +3,7 @@ package message
 import (
 	"context"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"insider-assesment/pkg/domain/message"
+	"insider-assessment/pkg/domain/message"
 )
 
 type Service struct {

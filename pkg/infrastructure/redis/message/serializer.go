@@ -3,7 +3,7 @@ package message
 import (
 	"bytes"
 	"encoding/gob"
-	"insider-assesment/pkg/domain/message"
+	"insider-assessment/pkg/domain/message"
 	"time"
 )
 
