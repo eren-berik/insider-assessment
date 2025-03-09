@@ -64,7 +64,7 @@ func (s *Server) Run() {
 // @Tags worker
 // @Accept json
 // @Produce json
-// @Success 200 {object} string "Worker started/stopped successfully"
+// @Success 202 {object} string "Worker started/stopped successfully"
 // @Failure 405 {object} string "Method not allowed"
 // @Router /worker [post]
 func (s *Server) handleWorkerControl(w http.ResponseWriter, r *http.Request) {
@@ -96,6 +96,7 @@ func (s *Server) handleWorkerControl(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Success 200 {object} api.MessageListResponse
 // @Failure 404 {object} string "No messages found"
+// @Failure 405 {object} string "Method not allowed"
 // @Failure 500 {object} string "Failed to fetch messages"
 // @Router /messages [get]
 func (s *Server) handleMessages(w http.ResponseWriter, r *http.Request) {
