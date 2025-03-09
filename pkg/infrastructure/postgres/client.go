@@ -2,25 +2,21 @@ package postgres
 
 import (
 	"context"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"log"
 )
 
 type PGPool struct {
-	pool *pgxpool.Pool
+	Conn *pgx.Conn
 }
 
-func NewPGPool(ctx context.Context, connStr string) *PGPool {
-	p, err := pgxpool.New(ctx, connStr)
+func NewPGPool(pgConnString string) *pgxpool.Pool {
+	conn, err := pgxpool.New(context.Background(), pgConnString)
 	if err != nil {
-		log.Print("Postgres connection failed!")
-		panic(err)
+		log.Printf("Error connecting to the database: %v\n", err)
+		return nil
 	}
-	return &PGPool{
-		pool: p,
-	}
-}
-
-func (p PGPool) Pool() *pgxpool.Pool {
-	return p.pool
+	log.Println("Successfully connected to the database")
+	return conn
 }

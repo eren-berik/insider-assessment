@@ -2,23 +2,32 @@ package message
 
 import (
 	"context"
+	"fmt"
+)
+
+const (
+	Pending Status = iota
+	Sent
+	Failed
 )
 
 type (
 	PostgresService interface {
-		Message(ctx context.Context, platform string) (Message, error)
-		Save(ctx context.Context, message Message) error
+		AllMessages(ctx context.Context) ([]*Message, error)
+		GetMessagesByStatus(ctx context.Context, status Status) ([]*Message, error)
+		UpdateMessageStatus(ctx context.Context, id uint64, status Status) error
 	}
 	Message struct {
-		id                   string
+		id                   uint64
 		content              string
 		recipientPhoneNumber string
-		status               string
+		status               Status
 	}
+	Status uint8
 )
 
-func NewMessage(id, content, recipientPhoneNumber, status string) Message {
-	return Message{
+func NewMessage(id uint64, content, recipientPhoneNumber string, status Status) *Message {
+	return &Message{
 		id:                   id,
 		content:              content,
 		recipientPhoneNumber: recipientPhoneNumber,
@@ -26,7 +35,7 @@ func NewMessage(id, content, recipientPhoneNumber, status string) Message {
 	}
 }
 
-func (m Message) ID() string {
+func (m Message) ID() uint64 {
 	return m.id
 }
 
@@ -38,6 +47,19 @@ func (m Message) RecipientPhoneNumber() string {
 	return m.recipientPhoneNumber
 }
 
-func (m Message) Status() string {
+func (m Message) Status() Status {
 	return m.status
+}
+
+func (s Status) String() string {
+	switch s {
+	case Pending:
+		return "Pending"
+	case Sent:
+		return "Sent"
+	case Failed:
+		return "Failed"
+	default:
+		return fmt.Sprintf("Unknown Status (%d)", s)
+	}
 }
