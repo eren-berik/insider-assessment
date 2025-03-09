@@ -100,8 +100,12 @@ func (s *Server) handleWorkerControl(w http.ResponseWriter, r *http.Request) {
 // @Router /messages [get]
 func (s *Server) handleMessages(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
 	ctx := r.Context()
+
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 
 	messages, err := s.PostgresService.GetMessagesByStatus(ctx, message.Sent, -1)
 	if err != nil {
@@ -122,5 +126,6 @@ func (s *Server) handleMessages(w http.ResponseWriter, r *http.Request) {
 	if err = json.NewEncoder(w).Encode(response); err != nil {
 		log.Println("Error encoding messages:", err)
 		http.Error(w, "Failed to encode messages", http.StatusInternalServerError)
+		return
 	}
 }
