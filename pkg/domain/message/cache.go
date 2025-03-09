@@ -11,17 +11,17 @@ type (
 		Deserialize([]byte) (Cache, error)
 	}
 	CacheService interface {
-		Message(ctx context.Context, platform string) (Message, error)
-		Save(ctx context.Context, message Message) error
+		Message(ctx context.Context, id uint64) (Cache, error)
+		Save(ctx context.Context, message Cache) error
 	}
 	Cache struct {
-		id           string
+		id           uint64
 		responseCode int
 		sentTime     time.Time
 	}
 )
 
-func NewMessageCache(id string, responseCode int, sentTime time.Time) Cache {
+func NewMessageCache(id uint64, responseCode int, sentTime time.Time) Cache {
 	return Cache{
 		id:           id,
 		responseCode: responseCode,
@@ -29,7 +29,7 @@ func NewMessageCache(id string, responseCode int, sentTime time.Time) Cache {
 	}
 }
 
-func (m Cache) ID() string {
+func (m Cache) ID() uint64 {
 	return m.id
 }
 

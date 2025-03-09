@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/go-redis/redis/v8"
 	"insider-assesment/pkg/domain/message"
+	"strconv"
 )
 
 const cacheKeyPrefixModel = "message:"
@@ -21,7 +22,7 @@ func NewService(redis *redis.Client, serializer message.CacheSerializer) *Servic
 	}
 }
 
-func (r Service) Message(ctx context.Context, id string) (message.Cache, error) {
+func (r Service) Message(ctx context.Context, id uint64) (message.Cache, error) {
 	m := message.Cache{}
 	res, err := r.redis.Get(ctx, cacheKey(id)).Result()
 	if err != nil {
@@ -37,17 +38,17 @@ func (r Service) Message(ctx context.Context, id string) (message.Cache, error) 
 	return m, nil
 }
 
-func (r Service) Save(ctx context.Context, msg message.Cache) error {
-	p, err := r.serializer.Serialize(msg)
+func (r Service) Save(ctx context.Context, message message.Cache) error {
+	p, err := r.serializer.Serialize(message)
 	if err != nil {
 		return err
 	}
-	if _, err = r.redis.Set(ctx, cacheKey(msg.ID()), p, -1).Result(); err != nil {
+	if _, err = r.redis.Set(ctx, cacheKey(message.ID()), p, -1).Result(); err != nil {
 		return err
 	}
 	return nil
 }
 
-func cacheKey(messageId string) string {
-	return cacheKeyPrefixModel + messageId
+func cacheKey(messageId uint64) string {
+	return cacheKeyPrefixModel + strconv.FormatUint(messageId, 10)
 }

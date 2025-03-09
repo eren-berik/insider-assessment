@@ -13,7 +13,7 @@ import (
 func testNewCache() message.Cache {
 	staticTime := time.Date(2025, 3, 9, 12, 0, 0, 0, time.UTC)
 	return message.NewMessageCache(
-		"test-id",
+		100,
 		202,
 		staticTime,
 	)

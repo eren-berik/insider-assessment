@@ -10,7 +10,7 @@ import (
 type (
 	Serializer        struct{}
 	SerializedMessage struct {
-		Id           string    `json:"id"`
+		Id           uint64    `json:"id"`
 		ResponseCode int       `json:"response_code"`
 		SentTime     time.Time `json:"sent_time"`
 	}
