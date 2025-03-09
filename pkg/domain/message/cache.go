@@ -6,6 +6,10 @@ import (
 )
 
 type (
+	CacheSerializer interface {
+		Serialize(m Cache) ([]byte, error)
+		Deserialize([]byte) (Cache, error)
+	}
 	CacheService interface {
 		Message(ctx context.Context, platform string) (Message, error)
 		Save(ctx context.Context, message Message) error
